@@ -13,3 +13,10 @@ Project created to help on the rescue, finding and maintaning the animals that l
 - As programmers, we aim to help using technology and software development as a way to achieve this end goal. This is a project based in human and animal rights to freedom, the right to have a life, a home and a family that doesn't explore neither uses violence on them.
 - We will construct a platform that will do this matching between people and the needed animals.
 
+## Project Scope
+
+Build a PWA that:
+- Read GeoData from Open Source APIs.
+- Integrates with iOT(Drone CAMs) and interacts with its data in Realtime.
+- Makes use of IA and ML to locate animals on closed forests or places of difficult acessibility.
+
