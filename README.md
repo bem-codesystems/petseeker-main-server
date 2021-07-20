@@ -15,8 +15,10 @@ Project created to help on the rescue, finding and maintaning the animals that l
 
 ## Project Scope
 
+1 - High level description.
+
 Build a PWA that:
 - Read GeoData from Open Source APIs.
 - Integrates with iOT(Drone CAMs) and interacts with its data in Realtime.
 - Makes use of IA and ML to locate animals on closed forests or places of difficult acessibility.
-
+- Has a built-in mechanism of crowdfunding and full possibility of p2p(peer-to-peer) money transfer to enable the animals saving and cover emergency costs in case of a hurt animal being found.
