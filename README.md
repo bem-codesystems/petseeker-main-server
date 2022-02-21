@@ -32,3 +32,7 @@ Build a PWA that:
 3 - Stay anonymous. Let the cause make some noise.
 
 4 - Make increasing help. Don't try to hug the world in one step only.
+
+5 - Animals are our friends. Sometimes the man looks more animal when compared to them.
+
+6 - We are stack agnostic. Let's move over the flow, and use what fits best to the job.
