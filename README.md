@@ -30,3 +30,5 @@ Build a PWA that:
 2 - Save the animals, not our pocket
 
 3 - Stay anonymous. Let the cause make some noise.
+
+4 - Make increasing help. Don't try to hug the world in one step only.
