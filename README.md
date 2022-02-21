@@ -22,3 +22,11 @@ Build a PWA that:
 - Integrates with iOT(Drone CAMs) and interacts with its data in Realtime.
 - Makes use of IA and ML to locate animals on closed forests or places of difficult acessibility.
 - Has a built-in mechanism of crowdfunding and full possibility of p2p(peer-to-peer) money transfer to enable the animals saving and cover emergency costs in case of a hurt animal being found.
+
+## Manifest
+
+1 - Start Small to Become Big
+
+2 - Save the animals, not our pocket
+
+3 - Stay anonymous. Let the cause make some noise.
