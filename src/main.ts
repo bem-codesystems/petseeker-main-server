@@ -1,5 +1,13 @@
-import {createServer, IncomingMessage, Server, ServerResponse} from "http";
+import {createServer, IncomingHttpHeaders, IncomingMessage, Server, ServerResponse} from "http";
 import {StringDecoder} from "string_decoder";
+import * as url from "url";
+
+interface IPayloadModel<T,V> {
+    path: T;
+    params: URLSearchParams;
+    method: T | V;
+    headers: IncomingHttpHeaders;
+}
 
 enum IpTypes {
     ipv4 = `127.0.0.1`,
@@ -37,7 +45,20 @@ class NewServer <IServer> {
       return inputString.replace(`/^\+|\+$/`,``);
   };
 
-  processRequest(server: Server, decoder: StringDecoder){
+  extractPropsFromRequest(req: IncomingMessage){
+      const initialUrl = `http://${req.headers.host}/`;
+      const formedURL = new url.URL(req.url!,initialUrl);
+      const { method,headers } = req;
+      const { pathname,searchParams } = formedURL;
+      return {
+          method,
+          headers,
+          path: pathname,
+          params: searchParams,
+      };
+  };
+
+  processRequest(server: Server, decoder: StringDecoder,payload: IPayloadModel<string,undefined>){
      let initialBuffer = ``;
 
      server.on(`data`,(data: Buffer) => {
@@ -46,6 +67,12 @@ class NewServer <IServer> {
 
      server.on(`end`, () => {
         initialBuffer += decoder.end();
+
+        const contract = {
+            ...payload,
+            body: initialBuffer
+        };
+
      });
   }
 
