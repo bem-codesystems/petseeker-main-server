@@ -54,7 +54,25 @@ class NewServer <IServer> {
 const instance = new NewServer(3000, IpTypes.ipv4);
 const server = instance.create();
 server.listen(instance?.port,instance?.ipType);
-console.log(server);
+
+interface IRouter<T> {
+    ping: T;
+    [k: string]: T;
+    notFound: T;
+}
+
+let Router: IRouter<Function|null> = {
+    ping: (req: IncomingMessage,res: ServerResponse) => {
+       res.setHeader(`Content-Type`,`application/json`);
+       res.writeHead(200);
+       res.end(JSON.stringify({message: `pong.`}));
+    },
+    notFound: (req: IncomingMessage,res: ServerResponse) => {
+        res.setHeader(`Content-Type`,`application/json`);
+        res.writeHead(404);
+        res.end(JSON.stringify({message: `Path not found.`}));
+    },
+};
 
 
 
