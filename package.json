@@ -1,0 +1,22 @@
+{
+  "name": "petseeker",
+  "version": "1.0.0",
+  "description": "Project created to help on the rescue, finding and maintaning the animals that live abandoned, even on streets, florests, and all kinds of environment possible.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/bem-codesystems/petseeker.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/bem-codesystems/petseeker/issues"
+  },
+  "homepage": "https://github.com/bem-codesystems/petseeker#readme",
+  "dependencies": {
+    "@types/node": "^17.0.25"
+  }
+}
