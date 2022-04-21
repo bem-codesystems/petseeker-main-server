@@ -42,7 +42,7 @@ class NewServer <IServer> {
   };
 
   sanitizeUrl(inputString: string){
-      return inputString.replace(`/^\+|\+$/`,``);
+      return inputString.replace(`/^\/+|\/+$/`,``);
   };
 
   extractPropsFromRequest(req: IncomingMessage){
