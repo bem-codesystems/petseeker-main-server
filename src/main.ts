@@ -16,9 +16,9 @@ enum IpTypes {
 };
 
 interface IRouter<T> {
-    ping: T;
+    "/ping": T;
     [k: string]: T;
-    notFound: T;
+    "/notFound": T;
 }
 
 interface IServer{
@@ -40,7 +40,7 @@ class NewServer <IServer> {
   create(){
       const server: Server = createServer((req:IncomingMessage,res: ServerResponse) => {
           const payload: IPayloadModel<string, undefined> = this.extractPropsFromRequest(req,res);
-          this.processRequest(payload,this.router,res);
+          this.validateRoute(this.router,payload?.path,payload,res);
       });
       return server;
   };
@@ -59,7 +59,7 @@ class NewServer <IServer> {
   };
 
   extractPropsFromRequest(req: IncomingMessage,res: ServerResponse){
-      const initialUrl = `http://${req.headers.host}/`;
+      const initialUrl = `http://${req.headers.host}`;
       const formedURL = new url.URL(req.url!,initialUrl);
       const { method,headers } = req;
       const { pathname,searchParams } = formedURL;
@@ -75,7 +75,7 @@ class NewServer <IServer> {
 
   validateRoute(router: IRouter<Function>, route: string, payload: IPayloadModel<string,undefined>,response: ServerResponse){
       const validRoute = Object.keys(router).includes(route);
-      return validRoute ? router[route](payload,response) : router[`notFound`](payload,response);
+      return validRoute ? router[route](payload,response) : router[`/notFound`](payload,response);
   }
 
   processRequest(payload: IPayloadModel<string,undefined>,router: IRouter<Function>, response: ServerResponse){
@@ -103,12 +103,14 @@ class NewServer <IServer> {
 };
 
 let Router: IRouter<Function> = {
-    ping: (contract: IPayloadModel<string, undefined>,res: ServerResponse) => {
+    "/ping": (contract: IPayloadModel<string, undefined>,res: ServerResponse) => {
+       console.log(contract);
        res.setHeader(`Content-Type`,`application/json`);
        res.writeHead(200);
        res.end(JSON.stringify({message: `pong.`}));
     },
-    notFound: (contract: IPayloadModel<string, undefined>,res: ServerResponse) => {
+    "/notFound": (contract: IPayloadModel<string, undefined>,res: ServerResponse) => {
+        console.log(contract);
         res.setHeader(`Content-Type`,`application/json`);
         res.writeHead(404);
         res.end(JSON.stringify({message: `Path not found.`}));
