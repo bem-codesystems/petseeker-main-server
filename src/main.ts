@@ -7,6 +7,7 @@ interface IPayloadModel<T,V> {
     params: URLSearchParams;
     method: T | V;
     headers: IncomingHttpHeaders;
+    body?: string;
 }
 
 enum IpTypes {
@@ -58,7 +59,12 @@ class NewServer <IServer> {
       };
   };
 
-  processRequest(server: Server, decoder: StringDecoder,payload: IPayloadModel<string,undefined>){
+  validateRoute(router: IRouter<Function>, route: string, payload: IPayloadModel<string,undefined>,response: ServerResponse){
+      const validRoute = Object.keys(router).includes(route);
+      return validRoute ? router[route](payload,response) : router[`notFound`](payload,response);
+  }
+
+  processRequest(server: Server, decoder: StringDecoder,payload: IPayloadModel<string,undefined>,router: IRouter<Function>, response: ServerResponse){
      let initialBuffer = ``;
 
      server.on(`data`,(data: Buffer) => {
@@ -73,7 +79,10 @@ class NewServer <IServer> {
             body: initialBuffer
         };
 
+        this.validateRoute(router,contract.path,payload,response);
      });
+
+
   }
 
 };
@@ -88,13 +97,13 @@ interface IRouter<T> {
     notFound: T;
 }
 
-let Router: IRouter<Function|null> = {
-    ping: (req: IncomingMessage,res: ServerResponse) => {
+let Router: IRouter<Function> = {
+    ping: (contract: IPayloadModel<string, undefined>,res: ServerResponse) => {
        res.setHeader(`Content-Type`,`application/json`);
        res.writeHead(200);
        res.end(JSON.stringify({message: `pong.`}));
     },
-    notFound: (req: IncomingMessage,res: ServerResponse) => {
+    notFound: (contract: IPayloadModel<string, undefined>,res: ServerResponse) => {
         res.setHeader(`Content-Type`,`application/json`);
         res.writeHead(404);
         res.end(JSON.stringify({message: `Path not found.`}));
