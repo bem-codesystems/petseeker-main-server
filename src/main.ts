@@ -15,21 +15,33 @@ enum IpTypes {
     ipv6 = `[::1]`,
 };
 
+interface IRouter<T> {
+    ping: T;
+    [k: string]: T;
+    notFound: T;
+}
+
 interface IServer{
     port: number;
     ipType: string;
+    router: IRouter<Function>;
 }
 
 class NewServer <IServer> {
     port: number;
     ipType: string;
-    constructor(port: number,ipType: string){
+    router: IRouter<Function>;
+    constructor (port: number,ipType: string, router: IRouter<Function>) {
     this.port = port;
     this.ipType = ipType;
+    this.router = router;
   };
 
   create(){
-      const server: Server = createServer((req:IncomingMessage,res: ServerResponse) => {});
+      const server: Server = createServer((req:IncomingMessage,res: ServerResponse) => {
+          const payload: IPayloadModel<string, undefined> = this.extractPropsFromRequest(req,res);
+          this.processRequest(payload,this.router,res);
+      });
       return server;
   };
 
@@ -46,15 +58,17 @@ class NewServer <IServer> {
       return inputString.replace(`/^\/+|\/+$/`,``);
   };
 
-  extractPropsFromRequest(req: IncomingMessage){
+  extractPropsFromRequest(req: IncomingMessage,res: ServerResponse){
       const initialUrl = `http://${req.headers.host}/`;
       const formedURL = new url.URL(req.url!,initialUrl);
       const { method,headers } = req;
       const { pathname,searchParams } = formedURL;
+      const processedPath = this.sanitizeUrl(pathname);
       return {
           method,
           headers,
-          path: pathname,
+          res,
+          path: processedPath,
           params: searchParams,
       };
   };
@@ -64,8 +78,12 @@ class NewServer <IServer> {
       return validRoute ? router[route](payload,response) : router[`notFound`](payload,response);
   }
 
-  processRequest(server: Server, decoder: StringDecoder,payload: IPayloadModel<string,undefined>,router: IRouter<Function>, response: ServerResponse){
+  processRequest(payload: IPayloadModel<string,undefined>,router: IRouter<Function>, response: ServerResponse){
      let initialBuffer = ``;
+
+     let server = this.create();
+
+     let decoder = this.decoder();
 
      server.on(`data`,(data: Buffer) => {
         initialBuffer += decoder.write(data);
@@ -81,21 +99,8 @@ class NewServer <IServer> {
 
         this.validateRoute(router,contract.path,payload,response);
      });
-
-
   }
-
 };
-
-const instance = new NewServer(3000, IpTypes.ipv4);
-const server = instance.create();
-server.listen(instance?.port,instance?.ipType);
-
-interface IRouter<T> {
-    ping: T;
-    [k: string]: T;
-    notFound: T;
-}
 
 let Router: IRouter<Function> = {
     ping: (contract: IPayloadModel<string, undefined>,res: ServerResponse) => {
@@ -110,5 +115,7 @@ let Router: IRouter<Function> = {
     },
 };
 
-
+const instance = new NewServer(3000, IpTypes.ipv4, Router);
+const server = instance.create();
+server.listen(instance?.port,instance?.ipType);
 
