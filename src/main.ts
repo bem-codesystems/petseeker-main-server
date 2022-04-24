@@ -2,10 +2,12 @@ import {createServer, IncomingHttpHeaders, IncomingMessage, Server, ServerRespon
 import {StringDecoder} from "string_decoder";
 import * as url from "url";
 import { config } from 'dotenv';
+import Ping from './controllers/ping';
+import NotFound from './controllers/notFound';
 
 config();
 
-interface IPayloadModel<T,V> {
+export interface IPayloadModel<T,V> {
     path: T;
     params: URLSearchParams;
     method: T | V;
@@ -106,18 +108,8 @@ class NewServer <IServer> {
 };
 
 let Router: IRouter<Function> = {
-    "/ping": (contract: IPayloadModel<string, undefined>,res: ServerResponse) => {
-       console.log(contract);
-       res.setHeader(`Content-Type`,`application/json`);
-       res.writeHead(200);
-       res.end(JSON.stringify({message: `pong.`}));
-    },
-    "/notFound": (contract: IPayloadModel<string, undefined>,res: ServerResponse) => {
-        console.log(contract);
-        res.setHeader(`Content-Type`,`application/json`);
-        res.writeHead(404);
-        res.end(JSON.stringify({message: `Path not found.`}));
-    },
+    "/ping": Ping,
+    "/notFound": NotFound,
 };
 
 async function Main(){
