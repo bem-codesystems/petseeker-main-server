@@ -1,6 +1,9 @@
 import {createServer, IncomingHttpHeaders, IncomingMessage, Server, ServerResponse} from "http";
 import {StringDecoder} from "string_decoder";
 import * as url from "url";
+import { config } from 'dotenv';
+
+config();
 
 interface IPayloadModel<T,V> {
     path: T;
@@ -50,8 +53,8 @@ class NewServer <IServer> {
     return Decoder;
   };
 
-  listen(server: Server,port: number){
-      return server.listen(port);
+  listen(server: Server = this.create(),port: number,callback: Function){
+      return server.listen(port,callback());
   };
 
   sanitizeUrl(inputString: string){
@@ -117,7 +120,18 @@ let Router: IRouter<Function> = {
     },
 };
 
-const instance = new NewServer(3000, IpTypes.ipv4, Router);
-const server = instance.create();
-server.listen(instance?.port,instance?.ipType);
+async function Main(){
+    const instance = new NewServer(Number(process.env.PORT), IpTypes.ipv4, Router);
+    const server = instance.create();
+    return {server,instance};
+};
+
+Main()
+    .then(s => {
+        const {server,instance} = s;
+        server.listen(instance?.port,() => console.log(`Listening on ${process.env.PORT}`));
+    })
+    .catch(err => console.error(err));
+
+
 

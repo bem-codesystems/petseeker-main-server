@@ -17,6 +17,7 @@
   },
   "homepage": "https://github.com/bem-codesystems/petseeker#readme",
   "dependencies": {
-    "@types/node": "^17.0.25"
+    "@types/node": "^17.0.25",
+    "dotenv": "^16.0.0"
   }
 }
