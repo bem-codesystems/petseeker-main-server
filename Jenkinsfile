@@ -1,30 +1,29 @@
+def gv
 pipeline {
 
     agent any
 
     stages {
+        stage('Init') {
+            script {
+                gv = load "script.groovy"
+            }
+        }
         stage('Build Docker Image and Push to Registry') {
             steps {
                 script {
-                    withCredentials([usernamePassword(credentialsId: 'dockerhub', passwordVariable: 'PASSWORD', usernameVariable: 'USERNAME')]) {
-                        sh "docker build -t oadrianoo/node-ext:1.${env.BUILD_TAG} ."
-                        sh "echo ${PASSWORD} | docker login -u ${USERNAME} --password-stdin"
-                        sh "docker push oadrianoo/node-ext:1.${env.BUILD_TAG}"
-                    }
+                   gv.buildArtifactAndPushToRegistry()
                 }
-                echo 'Start build process...'
-                echo "Build tag:${env.BUILD_TAG}"
-                echo "Running ${env.BUILD_ID} on ${env.JENKINS_URL}"
             }
         }
         stage('Test') {
             steps {
-                echo 'Start testing process...'
+                gv.testApp()
             }
         }
         stage('Deploy') {
             steps {
-                echo 'Deploying...'
+                gv.deployApp()
             }
         }
     }
