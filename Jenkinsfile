@@ -22,4 +22,15 @@ pipeline {
             }
         }
     }
+    post {
+        success {
+            slackSend channel: '#server',
+            color: 'green',
+            message: "The pipeline ${currentBuild.fullDisplayName} completed succesfully."
+        }
+        failure {
+            echo 'FAILURE'
+        }
+
+    }
 }
