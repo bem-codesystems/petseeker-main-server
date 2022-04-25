@@ -7,9 +7,9 @@ pipeline {
             steps {
                 script {
                     withCredentials([usernamePassword(credentialsId: 'dockerhub', passwordVariable: 'PASSWORD', usernameVariable: 'USERNAME')]) {
-                        sh 'docker build -t oadrianoo/node-ext:1.1 .'
+                        sh "docker build -t oadrianoo/node-ext:1.${env.BUILD_TAG} ."
                         sh "echo ${PASSWORD} | docker login -u ${USERNAME} --password-stdin"
-                        sh 'docker push oadrianoo/node-ext:1.1'
+                        sh "docker push oadrianoo/node-ext:1.${env.BUILD_TAG}"
                     }
                 }
                 echo 'Start build process...'
