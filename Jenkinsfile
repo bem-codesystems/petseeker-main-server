@@ -8,7 +8,7 @@ pipeline {
                 sh ""
                 echo 'Start build process...'
                 echo "Build tag:${env.BUILD_TAG}"
-                echo "Running ${env.BUILD_ID} ON {env.JENKINS_URL}"
+                echo "Running ${env.BUILD_ID} on ${env.JENKINS_URL}"
             }
         }
         stage('Test') {
