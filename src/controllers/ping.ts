@@ -1,5 +1,5 @@
 import {ServerResponse} from "http";
-import {IPayloadModel} from "../main";
+import {IPayloadModel} from "../app";
 
 const ping = (contract: IPayloadModel<string, undefined>,res: ServerResponse) => {
     console.log(contract);
