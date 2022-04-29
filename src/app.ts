@@ -4,6 +4,9 @@ import * as url from "url";
 import { config } from 'dotenv';
 import Ping from './controllers/ping';
 import NotFound from './controllers/notFound';
+import CreateUser from "./controllers/createUser";
+import UpdateUser from "./controllers/updateUser";
+import RemoveUser from "./controllers/removeUser";
 
 config();
 
