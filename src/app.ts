@@ -113,9 +113,15 @@ class NewServer <IServer> {
 
 let Router: IRouter<Function> = {
     "ping": Ping,
+    "pet/create": CreatePet,
+    "pet/update": UpdatePet,
+    "pet/remove": RemovePet,
     "user/create": CreateUser,
     "user/update": UpdateUser,
     "user/remove": RemoveUser,
+    "wallet/create": CreateWallet,
+    "wallet/update": UpdateWallet,
+    "wallet/remove": RemoveWallet,
     "notFound": NotFound,
 };
 
