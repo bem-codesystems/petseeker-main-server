@@ -15,3 +15,15 @@ export const checkCorrectMethod = <T extends EnumPossibleRequests>(method: T,all
         return false;
     }
 };
+
+type buffer = string;
+
+export function bodyParser<T extends buffer>(buffer:T){
+    try{
+        if(buffer.length > 0){
+            return JSON.parse(buffer);
+        }
+    }catch(err){
+        return {}
+    }
+}

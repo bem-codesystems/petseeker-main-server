@@ -1,3 +1,12 @@
+export interface IUser {
+    id: string;
+    name: string;
+    email: string;
+    createdAt: number;
+    hasWallet: boolean;
+    updatedAt: number;
+}
+
 class User {
     id: string;
     name: string;

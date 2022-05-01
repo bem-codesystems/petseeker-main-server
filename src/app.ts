@@ -7,6 +7,9 @@ import NotFound from './controllers/notFound';
 import CreateUser from "./controllers/createUser";
 import UpdateUser from "./controllers/updateUser";
 import RemoveUser from "./controllers/removeUser";
+import CreatePet from "./controllers/createPet";
+import UpdatePet from "./controllers/updatePet";
+import RemovePet from "./controllers/removePet";
 
 config();
 

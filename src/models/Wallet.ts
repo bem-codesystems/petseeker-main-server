@@ -1,3 +1,13 @@
+export interface IWallet {
+    type: WalletType;
+    id: string;
+    balance: number;
+    owner: string;
+    isVerified: boolean;
+    createdAt: number;
+    updatedAt: number;
+}
+
 export enum WalletType {
     Regular,
     Crypto,
