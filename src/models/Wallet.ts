@@ -6,12 +6,12 @@ export enum WalletType {
 class Wallet {
     type: WalletType;
     id: string;
-    balance: string;
+    balance: number;
     owner: string;
     isVerified: boolean;
     createdAt: number;
     updatedAt: number;
-    constructor(type: WalletType,id: string,balance: string, owner: string, isVerified: boolean, createdAt: number,updatedAt: number) {
+    constructor(type: WalletType,id: string,balance: number, owner: string, isVerified: boolean, createdAt: number,updatedAt: number) {
         this.type = type;
         this.id = id;
         this.balance = balance;
