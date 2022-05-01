@@ -22,11 +22,15 @@ class Pet {
     size: PetSize;
     healthState: PetHealthState;
     pics: any[];
-    constructor(type: PetType,size: PetSize, healthState: PetHealthState, pics: any[]) {
+    createdAt: number;
+    updatedAt: number;
+    constructor(type: PetType,size: PetSize, healthState: PetHealthState, pics: any[],createdAt: number,updatedAt: number) {
         this.type = type;
         this.size = size;
         this.healthState = healthState;
         this.pics = pics;
+        this.createdAt = createdAt;
+        this.updatedAt = updatedAt;
     }
     updatePics(picBlob: string) {
         this.pics.push(picBlob);
