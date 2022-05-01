@@ -5,7 +5,7 @@ export interface IWallet {
     owner: string;
     isVerified: boolean;
     createdAt: number;
-    updatedAt: number;
+    updatedAt: number|null;
 }
 
 export enum WalletType {
@@ -20,8 +20,8 @@ class Wallet {
     owner: string;
     isVerified: boolean;
     createdAt: number;
-    updatedAt: number;
-    constructor(type: WalletType,id: string,balance: number, owner: string, isVerified: boolean, createdAt: number,updatedAt: number) {
+    updatedAt: number|null;
+    constructor(type: WalletType,id: string,balance: number, owner: string, isVerified: boolean, createdAt: number,updatedAt: number|null) {
         this.type = type;
         this.id = id;
         this.balance = balance;

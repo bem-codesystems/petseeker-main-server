@@ -10,6 +10,9 @@ import RemoveUser from "./controllers/removeUser";
 import CreatePet from "./controllers/createPet";
 import UpdatePet from "./controllers/updatePet";
 import RemovePet from "./controllers/removePet";
+import CreateWallet from "./controllers/createWallet";
+import UpdateWallet from "./controllers/updateWallet";
+import RemoveWallet from "./controllers/removeWallet";
 
 config();
 
