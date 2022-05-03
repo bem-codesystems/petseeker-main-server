@@ -17,11 +17,12 @@ import RemoveWallet from "./controllers/removeWallet";
 config();
 
 export interface IPayloadModel<T,V> {
-    path: T;
-    params: URLSearchParams;
-    method: T | V;
-    headers: IncomingHttpHeaders;
+    path?: T;
+    params?: URLSearchParams;
+    method?: T | V;
+    headers?: IncomingHttpHeaders;
     body?: string;
+    res?: ServerResponse;
 }
 
 enum IpTypes {
@@ -53,9 +54,7 @@ class NewServer <IServer> {
 
     create(){
         const server: Server = createServer((req:IncomingMessage,res: ServerResponse) => {
-            const payload: IPayloadModel<string, undefined> = this.extractPropsFromRequest(req,res);
-            this.validateRoute(this.router,payload?.path,payload,res);
-            this.processRequest(payload,this?.router!,res);
+            this.extractPropsFromRequest(req,res,this.router!)
         });
         return server;
     };
@@ -73,48 +72,48 @@ class NewServer <IServer> {
         return inputString.replace(/^\/+|\/+$/g,``);
     };
 
-    extractPropsFromRequest(req: IncomingMessage,res: ServerResponse){
+    verifyAndInjectRoute(router:IRouter<Function>,contract: IPayloadModel<string, any>,res: ServerResponse){
+        switch (Object.keys(router).includes(contract?.path!)) {
+            case true:
+                router[contract?.path!](contract, res);
+                break;
+            default:
+                router[`notFound`](contract, res);
+                break;
+        }
+    };
+
+    extractPropsFromRequest(req: IncomingMessage,res: ServerResponse,router: IRouter<Function>){
         const initialUrl = `http://${req.headers.host}/`;
         const formedURL = new url.URL(req.url!,initialUrl);
         const { method,headers } = req;
         const { pathname,searchParams } = formedURL;
         const processedPath = this.sanitizeUrl(pathname);
-        return {
-            method,
-            headers,
-            res,
-            path: processedPath,
-            params: searchParams,
-        };
-    };
 
-    validateRoute(router: IRouter<Function>, route: string, payload: IPayloadModel<string,undefined>,response: ServerResponse){
-        const validRoute = Object.keys(router).includes(route);
-        return validRoute ? router[route](payload,response) : router[`notFound`](payload,response);
-    }
-
-    processRequest(payload: IPayloadModel<string,undefined>,router: IRouter<Function>, response: ServerResponse){
         let initialBuffer = ``;
-
-        let server = this.create();
 
         let decoder = this.decoder();
 
-        server.on(`data`,(data: Buffer) => {
+        req.on(`data`,(data: Buffer) => {
             initialBuffer += decoder.write(data);
         });
 
-        server.on(`end`, () => {
+        req.on(`end`, () => {
             initialBuffer += decoder.end();
 
             const contract = {
-                ...payload,
+                method,
+                headers,
+                res,
+                path: processedPath,
+                params: searchParams,
                 body: initialBuffer
             };
 
-            this.validateRoute(router,contract.path,payload,response);
-        });
-    }
+            this.verifyAndInjectRoute(router,contract,res);
+
+        })
+    };
 };
 
 let Router: IRouter<Function> = {

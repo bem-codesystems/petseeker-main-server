@@ -20,9 +20,7 @@ type buffer = string;
 
 export function bodyParser<T extends buffer>(buffer:T){
     try{
-        if(buffer.length > 0){
-            return JSON.parse(buffer);
-        }
+        return JSON.parse(buffer);
     }catch(err){
         return {}
     }

@@ -12,6 +12,8 @@ const createWallet = (contract: IPayloadModel<string, undefined>,res: ServerResp
 
     const parsedBody: IWallet = bodyParser(body!);
 
+    console.log(parsedBody);
+
     const { type,id,isVerified,owner,balance } = parsedBody;
 
     const wallet: IWallet = new Wallet(
