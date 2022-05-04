@@ -25,3 +25,17 @@ export function bodyParser<T extends buffer>(buffer:T){
         return {}
     }
 }
+
+interface ITokenCheck {
+    token: string;
+    length: number;
+    salt: string;
+}
+
+export function validateToken<K extends keyof ITokenCheck>(token: string, length: number, salt: string): boolean {
+    try{
+        return token.length === length && token.startsWith(salt);
+    }catch(err){
+        return false
+    }
+}

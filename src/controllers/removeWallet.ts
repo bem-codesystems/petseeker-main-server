@@ -1,6 +1,6 @@
 import {ServerResponse} from "http";
 import {IPayloadModel} from "../app";
-import {bodyParser, checkCorrectMethod, EnumPossibleRequests} from "../utils/helpers";
+import {bodyParser, checkCorrectMethod, EnumPossibleRequests, validateToken} from "../utils/helpers";
 import Wallet, {IWallet} from "../models/Wallet";
 import {config} from "dotenv";
 
@@ -30,14 +30,6 @@ const removeWallet = (contract: IPayloadModel<string, undefined>,res: ServerResp
     const hasToken = !!headers?.[`Authorization`];
 
     const token = String(headers?.[`Authorization`]).replace(`Bearer `,``);
-
-    const validateToken = (token: string, length: number, salt: string): boolean => {
-        try{
-            return token.length === length && token.startsWith(salt);
-        }catch(err){
-            return false
-        }
-    };
 
     if(hasToken && validateToken(token,150,process.env.DOGLEAKS_SALT!)){
         if(checkCorrectMethod(EnumPossibleRequests.DELETE,method)){
