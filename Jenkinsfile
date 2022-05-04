@@ -37,7 +37,7 @@ pipeline {
         success {
             slackSend channel: '#server',
             color: 'green',
-            message: "The pipeline ${currentBuild.fullDisplayName} completed succesfully."
+            message: "The pipeline ${currentBuild.fullDisplayName} completed successfully."
         }
         failure {
             echo 'FAILURE'
