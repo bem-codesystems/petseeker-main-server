@@ -1,4 +1,4 @@
-import {IncomingHttpHeaders, IncomingMessage} from "http";
+import { IncomingHttpHeaders } from "http";
 
 export enum EnumPossibleRequests {
     GET = `GET`,
