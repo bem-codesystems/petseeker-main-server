@@ -23,6 +23,9 @@ const updatePet = (contract: IPayloadModel<string, undefined>,res: ServerRespons
         null,
     );
 
+    const petId = params?.get(`id`);
+
+
     if(checkCorrectMethod(EnumPossibleRequests.PUT,method)){
         res.setHeader(`Content-Type`,`application/json`);
         res.writeHead(201);

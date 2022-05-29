@@ -1,3 +1,5 @@
+import {IncomingHttpHeaders, IncomingMessage} from "http";
+
 export enum EnumPossibleRequests {
     GET = `GET`,
     POST = `POST`,
@@ -32,10 +34,18 @@ interface ITokenCheck {
     salt: string;
 }
 
-export function validateToken<K extends keyof ITokenCheck>(token: string, length: number, salt: string): boolean {
-    try{
-        return token.length === length && token.startsWith(salt);
-    }catch(err){
-        return false
-    }
+type ExistentHeaders = IncomingHttpHeaders;
+
+export const checkExistentToken = <H extends ExistentHeaders>(headers: H): string => {
+  const hasHeaders = !!headers?.authorization;
+  const parsedToken = headers.authorization?.startsWith(`Bearer`) ? headers?.authorization?.split(` `)?.[1] : null;
+  if(hasHeaders) {
+      if(parsedToken !== null) {
+          return parsedToken!;
+      } else {
+          return ``;
+      }
+  } else {
+      return ``;
+  }
 }
