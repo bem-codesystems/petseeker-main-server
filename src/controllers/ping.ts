@@ -1,6 +1,6 @@
-import {ServerResponse} from "http";
-import {IPayloadModel} from "../app";
-import {checkCorrectMethod, checkExistentToken, EnumPossibleRequests} from "../utils/helpers";
+import { ServerResponse } from "http";
+import { IPayloadModel } from "../app";
+import { checkCorrectMethod, checkExistentToken, EnumPossibleRequests } from "../utils/helpers";
 
 const ping = (contract: IPayloadModel<string, undefined>,res: ServerResponse) => {
     res.setHeader(`Content-Type`,`application/json`);
