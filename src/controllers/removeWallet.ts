@@ -1,12 +1,19 @@
-import {ServerResponse} from "http";
-import {IPayloadModel} from "../app";
-import {bodyParser, checkCorrectMethod, EnumPossibleRequests, validateToken} from "../utils/helpers";
-import Wallet, {IWallet} from "../models/Wallet";
-import {config} from "dotenv";
+import { ServerResponse } from "http";
+import { IPayloadModel } from "../app";
+import {
+    bodyParser,
+    checkCorrectMethod,
+    checkExistentToken,
+    EnumPossibleRequests
+} from "../utils/helpers";
+import Wallet, { IWallet } from "../models/Wallet";
+import { config } from "dotenv";
 
 config();
 
 const removeWallet = (contract: IPayloadModel<string, undefined>,res: ServerResponse): void => {
+    res.setHeader(`Content-Type`,`application/json`);
+
     const { method,
             headers,
             params,
@@ -27,22 +34,17 @@ const removeWallet = (contract: IPayloadModel<string, undefined>,res: ServerResp
         Date.now(),
     );
 
-    const hasToken = !!headers?.[`Authorization`];
+    const walletId = params?.get(`id`);
 
-    const token = String(headers?.[`Authorization`]).replace(`Bearer `,``);
-
-    if(hasToken && validateToken(token,150,process.env.DOGLEAKS_SALT!)){
-        if(checkCorrectMethod(EnumPossibleRequests.DELETE,method)){
-            res.setHeader(`Content-Type`,`application/json`);
+    if(checkExistentToken(headers!)) {
+        if(checkCorrectMethod(EnumPossibleRequests.DELETE,method)) {
             res.writeHead(201);
             res.end(JSON.stringify(wallet));
-        }else{
-            res.setHeader(`Content-Type`,`application/json`);
+        } else {
             res.writeHead(405);
             res.end(JSON.stringify({message: `Method not Allowed.`}));
         }
-    }else{
-        res.setHeader(`Content-Type`,`application/json`);
+    } else {
         res.writeHead(401);
         res.end(JSON.stringify({message: `Unauthorized.`}));
     }

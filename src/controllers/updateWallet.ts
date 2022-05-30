@@ -1,9 +1,11 @@
 import {ServerResponse} from "http";
 import {IPayloadModel} from "../app";
-import {bodyParser, checkCorrectMethod, EnumPossibleRequests} from "../utils/helpers";
+import {bodyParser, checkCorrectMethod, checkExistentToken, EnumPossibleRequests} from "../utils/helpers";
 import Wallet, {IWallet} from "../models/Wallet";
 
 const updateWallet = (contract: IPayloadModel<string, undefined>,res: ServerResponse): void => {
+    res.setHeader(`Content-Type`,`application/json`);
+
     const { method,
             headers,
             params,
@@ -24,14 +26,19 @@ const updateWallet = (contract: IPayloadModel<string, undefined>,res: ServerResp
         Date.now(),
     );
 
-    if(checkCorrectMethod(EnumPossibleRequests.PUT,method)){
-        res.setHeader(`Content-Type`,`application/json`);
-        res.writeHead(201);
-        res.end(JSON.stringify(wallet));
-    }else{
-        res.setHeader(`Content-Type`,`application/json`);
-        res.writeHead(405);
-        res.end(JSON.stringify({message: `Method not Allowed.`}));
+    const walletId = params?.get(`id`);
+
+    if(checkExistentToken(headers!)) {
+        if(checkCorrectMethod(EnumPossibleRequests.PUT,method)){
+            res.writeHead(201);
+            res.end(JSON.stringify(wallet));
+        }else{
+            res.writeHead(405);
+            res.end(JSON.stringify({message: `Method not Allowed.`}));
+        }
+    } else {
+        res.writeHead(401);
+        res.end(JSON.stringify({message: `Unauthorized.`}));
     }
 };
 
