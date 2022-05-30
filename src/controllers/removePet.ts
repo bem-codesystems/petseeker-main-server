@@ -1,9 +1,11 @@
-import {ServerResponse} from "http";
-import {IPayloadModel} from "../app";
-import {bodyParser, checkCorrectMethod, EnumPossibleRequests, validateToken} from "../utils/helpers";
-import Pet, {IPet, PetHealthState} from "../models/Pet";
+import { ServerResponse } from "http";
+import { IPayloadModel } from "../app";
+import {bodyParser, checkCorrectMethod, checkExistentToken, EnumPossibleRequests} from "../utils/helpers";
+import Pet, { IPet, PetHealthState } from "../models/Pet";
 
 const removePet = (contract: IPayloadModel<string, undefined>,res: ServerResponse): void => {
+    res.setHeader(`Content-Type`,`application/json`);
+
     const { method,
             headers,
             params,
@@ -23,22 +25,17 @@ const removePet = (contract: IPayloadModel<string, undefined>,res: ServerRespons
         null,
     );
 
-    const hasToken = !!headers?.[`Authorization`];
+    const petId = params?.get(`id`);
 
-    const token = String(headers?.[`Authorization`]).replace(`Bearer `,``);
-
-    if(hasToken && validateToken(token,150,process.env.DOGLEAKS_SALT!)){
+    if(checkExistentToken(headers!)) {
         if(checkCorrectMethod(EnumPossibleRequests.DELETE,method)){
-            res.setHeader(`Content-Type`,`application/json`);
             res.writeHead(201);
             res.end(JSON.stringify(pet));
         }else{
-            res.setHeader(`Content-Type`,`application/json`);
             res.writeHead(405);
             res.end(JSON.stringify({message: `Method not Allowed.`}));
         }
-    }else{
-        res.setHeader(`Content-Type`,`application/json`);
+    } else {
         res.writeHead(401);
         res.end(JSON.stringify({message: `Unauthorized.`}));
     }
