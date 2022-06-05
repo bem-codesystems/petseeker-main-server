@@ -9,25 +9,25 @@ export interface IPet {
 }
 
 export enum PetType {
-    Dog,
+    Dog = 0,
     Cat,
     Bird,
     Another,
 }
 
 export enum PetSize {
-    SmallSize,
+    SmallSize = 0,
     MediumSize,
     BigSize,
 }
 
 export enum PetHealthState {
-    Unknown,
+    Unknown = 0,
     Healthy,
     Unhealthy,
 }
 
-class Pet {
+class Pet implements IPet{
     type: PetType;
     size: PetSize;
     healthState: PetHealthState;
