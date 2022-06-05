@@ -13,13 +13,20 @@ export interface IVet {
 }
 
 export enum VetType {
-    Public,
+    Public = 0,
     Particular
 }
 
 export enum VetTributes {
-    PF,
+    PF = 0,
     PJ,
+}
+
+export enum VetArea {
+    General = 0,
+    Cancer,
+    Surgery,
+    Infections,
 }
 
 class Vet implements IVet {
