@@ -7,7 +7,7 @@ export interface IUser {
     updatedAt: number;
 }
 
-class User {
+class User implements IUser{
     id: string;
     name: string;
     email: string;

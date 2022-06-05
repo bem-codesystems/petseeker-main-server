@@ -9,11 +9,11 @@ export interface IWallet {
 }
 
 export enum WalletType {
-    Regular,
+    Regular = 0,
     Crypto,
 }
 
-class Wallet {
+class Wallet implements IWallet{
     type: WalletType;
     id: string;
     balance: number;
