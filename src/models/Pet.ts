@@ -1,4 +1,5 @@
 export interface IPet {
+    id: string;
     type: PetType;
     size: PetSize;
     healthState: PetHealthState;
@@ -28,13 +29,15 @@ export enum PetHealthState {
 }
 
 class Pet implements IPet{
+    id: string;
     type: PetType;
     size: PetSize;
     healthState: PetHealthState;
     pics: any[];
     createdAt: number;
     updatedAt: number|null;
-    constructor(type: PetType,size: PetSize, healthState: PetHealthState, pics: any[],createdAt: number,updatedAt: number|null) {
+    constructor(id: string,type: PetType,size: PetSize, healthState: PetHealthState, pics: any[],createdAt: number,updatedAt: number|null) {
+        this.id = id;
         this.type = type;
         this.size = size;
         this.healthState = healthState;

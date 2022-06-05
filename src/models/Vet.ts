@@ -1,4 +1,5 @@
 export interface IVet {
+    id: string;
     type: VetType;
     contract: VetTributes;
     createdAt: number;
@@ -31,6 +32,7 @@ export enum VetArea {
 }
 
 class Vet implements IVet {
+    id: string;
     type: VetType;
     contract: VetTributes;
     createdAt: number;
@@ -43,7 +45,8 @@ class Vet implements IVet {
     city: string;
     address: string;
     complement: string;
-    constructor(type: VetType,contract: VetTributes, name: string, email: string,classRegisterNumber: string,vetArea: VetArea,state: string,city: string,address: string,complement: string,createdAt: number,updatedAt: number|null) {
+    constructor(id: string,type: VetType,contract: VetTributes, name: string, email: string,classRegisterNumber: string,vetArea: VetArea,state: string,city: string,address: string,complement: string,createdAt: number,updatedAt: number|null) {
+        this.id = id;
         this.type = type;
         this.contract = contract;
         this.classRegisterNumber = classRegisterNumber;
