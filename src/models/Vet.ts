@@ -6,6 +6,7 @@ export interface IVet {
     name: string;
     email: string;
     classRegisterNumber: string;
+    vetArea: VetArea;
     state: string;
     city: string;
     address: string;
@@ -37,14 +38,16 @@ class Vet implements IVet {
     name: string;
     email: string;
     classRegisterNumber: string;
+    vetArea: VetArea;
     state: string;
     city: string;
     address: string;
     complement: string;
-    constructor(type: VetType,contract: VetTributes, name: string, email: string,classRegisterNumber: string,state: string,city: string,address: string,complement: string,createdAt: number,updatedAt: number|null) {
+    constructor(type: VetType,contract: VetTributes, name: string, email: string,classRegisterNumber: string,vetArea: VetArea,state: string,city: string,address: string,complement: string,createdAt: number,updatedAt: number|null) {
         this.type = type;
         this.contract = contract;
         this.classRegisterNumber = classRegisterNumber;
+        this.vetArea = vetArea;
         this.state = state;
         this.city = city;
         this.address = address;
