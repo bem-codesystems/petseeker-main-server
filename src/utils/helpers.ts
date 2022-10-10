@@ -50,7 +50,11 @@ export const checkExistentToken = <H extends ExistentHeaders>(headers: H): strin
   }
 }
 
-const checkValidRequestPath = (incomingPath: string): boolean => {
-    const invalidPaths: string[] = ['admin','.env','/.git/config','index.php'];
+export const checkValidRequestPath = (incomingPath: string): boolean => {
+    const invalidPaths: string[] = ['admin','.env','/.git/config','index.php','nginx.conf','conf.d','/etc/systemd/system','df%-h'];
     return !invalidPaths.includes(incomingPath);
 }
+
+
+
+
