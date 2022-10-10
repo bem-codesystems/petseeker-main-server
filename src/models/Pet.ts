@@ -5,7 +5,7 @@ export interface IPet {
     healthState: PetHealthState;
     pics: any[];
     createdAt: number;
-    updatedAt: number|null;
+    updatedAt?: number|null;
     updatePics?(pic: string): void;
 }
 

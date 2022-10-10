@@ -1,4 +1,4 @@
-import { IncomingHttpHeaders } from "http";
+import {IncomingHttpHeaders, IncomingMessage} from "http";
 
 export enum EnumPossibleRequests {
     GET = `GET`,
@@ -48,4 +48,9 @@ export const checkExistentToken = <H extends ExistentHeaders>(headers: H): strin
   } else {
       return ``;
   }
+}
+
+const checkValidRequestPath = (incomingPath: string): boolean => {
+    const invalidPaths: string[] = ['admin','.env','/.git/config','index.php'];
+    return !invalidPaths.includes(incomingPath);
 }

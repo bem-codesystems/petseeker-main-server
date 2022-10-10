@@ -16,7 +16,10 @@ const createPet = (contract: IPayloadModel<string, undefined>,res: ServerRespons
 
     const { type,size } = parsedBody;
 
+    const id = params?.get('id');
+
     const pet: IPet = new Pet(
+        id!,
         type,
         size,
         PetHealthState.Healthy,
